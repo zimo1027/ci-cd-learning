@@ -1,12 +1,12 @@
-def add_numbers(a, b):
-    """Add two numbers and return the result"""
-    return a + b
+from flask import Flask
+
+app = Flask(__name__)
+
 
 def greet(name):
-    """Return a greeting message"""
     return f"Hello, {name}!"
 
+
 if __name__ == "__main__":
-    print(greet("World"))
-    print(f"2 + 3 = {add_numbers(2, 3)}")
+    app.run(debug=True)
 
