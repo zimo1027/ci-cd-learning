@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -26,4 +27,13 @@ jobs:
     - name: Run tests
       run: |
         python -m unittest test_app.py
+    
+    - name: Code quality check with Flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Code quality check with Pylint
+      run: |
+        pylint app.py --exit-zero
 
