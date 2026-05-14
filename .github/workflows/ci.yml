@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -31,8 +31,23 @@ jobs:
     - name: Code quality check with Flake8
       run: |
         flake8 . --count --show-source --statistics
-
+    
     - name: Code quality check with Pylint
       run: |
         pylint app.py --exit-zero
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Deploy to server
+      run: |
+        echo "🚀 Deploying to server..."
+        echo "📦 This step will connect to your server and deploy"
+        echo "✅ Deployment completed (simulated for now)"
 
