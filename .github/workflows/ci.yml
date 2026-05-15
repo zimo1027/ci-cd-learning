@@ -52,6 +52,20 @@ jobs:
         chmod 600 ~/.ssh/github_actions
         ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
     
+    - name: Debug SSH configuration
+      run: |
+        echo "=== SSH Configuration Debug ==="
+        echo "SSH_HOST: ${{ secrets.SSH_HOST }}"
+        echo "SSH_USER: ${{ secrets.SSH_USER }}"
+        echo "=== SSH Files ==="
+        ls -la ~/.ssh/
+        echo "=== Private Key First Line ==="
+        head -1 ~/.ssh/github_actions
+        echo "=== Private Key Last Line ==="
+        tail -1 ~/.ssh/github_actions
+        echo "=== Private Key Line Count ==="
+        wc -l ~/.ssh/github_actions
+    
     - name: Deploy to server
       run: |
         ssh -i ~/.ssh/github_actions ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
