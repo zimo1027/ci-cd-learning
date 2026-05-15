@@ -45,9 +45,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github_actions
+        chmod 600 ~/.ssh/github_actions
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+    
     - name: Deploy to server
       run: |
-        echo "🚀 Deploying to server..."
-        echo "📦 This step will connect to your server and deploy"
-        echo "✅ Deployment completed (simulated for now)"
+        ssh -i ~/.ssh/github_actions ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
+          cd /home/zimo1027/projects/ci-cd-learning
+          git pull origin main
+          ./deploy.sh
+        ENDSSH
 
